@@ -1,0 +1,10 @@
+su root syslog
+
+/var/log/auth.log {
+	weekly
+	rotate 7
+	compress
+	delaycompress
+	nomissingok
+	notifempty
+}
