@@ -1,0 +1,47 @@
+---
+- name: Configure ELk server
+  hosts: elk
+  become: yes
+  tasks:
+          - name: Configure memory specifics
+            sysctl:
+                    name: vm.max_map_count
+                    value: '262144'
+                    sysctl_set: yes
+                    state: present
+                    reload: yes
+
+          - name: Install python3-pip
+            apt:
+                    force_apt_get: yes
+                    name: python3-pip
+                    state: present
+                    update_cache: yes
+
+          - name: Install docker.io
+            apt:
+                    name: docker.io
+                    state: present
+
+          - name: Install docker via pip
+            pip:
+                    name: docker
+                    state: present
+                     
+          - name: pull an image
+            docker_container:
+                    name: elk
+                    image: sebp/elk:761
+                    state: started
+                    restart_policy: always
+                    ports:
+                            - 5601:5601
+                            - 9200:9200
+                            - 5044:5044
+
+
+          - name: Start docker service
+            systemd:
+                    name: "docker"
+                    state: started
+                    enabled: yes
