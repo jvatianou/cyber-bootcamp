@@ -26,7 +26,12 @@ Sets up the provision container on the  webservers
 
 # Provisioning
 From the jump box:
-`ansible-playbook elk.yml` for ELK box setup
-`andible-playbook setup.yml` for the webservers
-`ansible-playbook metricbeat-playbook.yml` to setup metric beats on webservers
-`ansible-playbook filebeat-playbook.yml` to setup file beats on webservers
+ 
+* `ansible-playbook elk.yml` for ELK box setup
+ 
+* `ansible-playbook setup.yml` for the webservers
+ 
+* `ansible-playbook metricbeat-playbook.yml` to setup metric beats on webservers
+ 
+* `ansible-playbook filebeat-playbook.yml` to setup file beats on webservers
+ 
