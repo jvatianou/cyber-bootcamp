@@ -10,6 +10,8 @@ Below rules describe access to the entire infrastructure.  Because the web conta
 | Jump Box Private IP	| 22 | SSH	| ELK Box Private IP	|
 | Admin Public IP | 5601	| TCP	| Kibana	|
 
+See README in Diagrams directory for more network information.
+
 # Background
 The "jump box" is the main provisioning box.  Admins from the configured public IP may access the jump box via SSH.  Docker must be installed on the jump using the following directions:
 
@@ -35,28 +37,28 @@ Configurations are detailed below, as are playbook commands to use.
 Ansible configuration file
 
 `elk.yml`
-Ansible playbook for ELK server
+Ansible playbook for ELK server.  Completes all the setup steps necessary.
 
 `filebeat-config.yml`
-Configures filebeats establishing correct hosts
+Configures filebeats establishing correct hosts.  Host for the ELK box must be established in the configuration file.  In this case, set to 10.1.0.5 box.
 
 `filebeat-playbook.yml`
-Ansible provision file for file beats
+Ansible provision file for file beats.
 
 `hosts`
-Lists out ansible provision hosts, including ELK and webservers
+Lists out ansible provision hosts, including ELK and webservers.  View the file for IP of relevant servers.  Matches information in diagram.
 
 `metricbeat-config.yml`
-Configuration file establishing correct hosts for metric beats
+Configuration file establishing correct hosts for metric beats.  Host for the ELK box must be established in the configuration file.  In this case, set to 10.1.0.5 box.
 
 `metricbeat-playbook.yml`
-Ansible provision file for Metric beats
+Ansible provision file for Metric beats.
 
 `setup.yml`
-Sets up the provision container on the  webservers
+Sets up the provision container on the  webservers.  Completes all the setup steps that are necessary including creating and starting any containers that need to run.
 
 # Provisioning
-From the jump box, run the following commands to provision different parts of the project:
+From the jump box, run the following commands to provision different parts of the project.  Each playbook must be run to setup all the webservers, the ELK box and then the right file and metric beats.
 
 * `ansible-playbook elk.yml` for ELK box setup
 
@@ -65,3 +67,7 @@ From the jump box, run the following commands to provision different parts of th
 * `ansible-playbook metricbeat-playbook.yml` to setup metric beats on webservers
 
 * `ansible-playbook filebeat-playbook.yml` to setup file beats on webservers
+
+# Accessing Kibana
+
+Users can access Kibana from the public IP of the admin computer to the public IP of the ELK box.  Once the URL is inputted, then the admin may monitor the webservers.
