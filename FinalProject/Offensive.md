@@ -6,7 +6,7 @@ Nmap scan results for each machine reveal the below services and OS details:
 
 First I performed a port scan using `nmap`:
 
-nmap -Pn 192.168.1.0/24
+> nmap -Pn 192.168.1.0/24
 Starting Nmap 7.80 ( https://nmap.org ) at 2022-02-28 15:15 PST
 Nmap scan report for 192.168.1.1
 Host is up (0.00056s latency).
